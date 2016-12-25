@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springapp.mvc.dao.companyuser.CompanyUserDao">
+    <!--<resultMap id="BaseResultMap" type="com.springapp.mvc.pojo.CompanyUser">-->
+    <!--<id column="id" property="id"/>-->
+    <!--<result column="companyUserName" property="companyusername"/>-->
+    <!--<result column="companyUserTel" property="companyusertel"/>-->
+    <!--<result column="companyUserManager" property="companyusermanager"/>-->
+    <!--<result column="companyUserEmail" property="companyuseremail"/>-->
+    <!--</resultMap>-->
+    <sql id="Base_Column_List">
+		id, name, password, email
+	</sql>
+
+    <select id="getObjByAccount" resultType="com.springapp.mvc.pojo.CompanyUser" parameterType="java.lang.String">
+		SELECT * from companyuser where companyuseraccount = #{account}
+	</select>
+
+    <select id="getObjById" resultType="com.springapp.mvc.pojo.CompanyUser">
+		SELECT * from companyuser where id = #{0}
+	</select>
+
+    <insert id="addCompanyUser" parameterType="com.springapp.mvc.pojo.CompanyUser">
+		INSERT into companyuser (companyuseraccount,companyuserpassword) VALUES (#{companyuseraccount,jdbcType=VARCHAR},
+         #{companyuserpassword,jdbcType=VARCHAR})
+	</insert>
+
+    <select id="accountIsExits" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT id from companyuser where companyuseraccount = #{account};
+	</select>
+
+    <!--<select id="listCompanyUser" resultType="BaseResultMap">-->
+    <!--SELECT * from companyuser where id>0;-->
+    <!--</select>-->
+
+    <update id="pubNews" parameterType="com.springapp.mvc.pojo.LastedNews">
+		update lastednews set newstype=#{newstype},newsname=#{newsname,jdbcType=VARCHAR},newscontent=#{newscontent,jdbcType=VARCHAR},
+		companyuserid=#{companyuserid},newscheck=#{newscheck,jdbcType=VARCHAR},companyname=#{companyname,jdbcType=VARCHAR},
+		companyusertel=#{companyusertel,jdbcType=VARCHAR},newsdescription=#{newsdescription,jdbcType=VARCHAR},newspic=#{newspic,jdbcType=VARCHAR} where id = #{id}
+	</update>
+
+    <update id="editCompanyUser" parameterType="java.util.Map">
+		update companyuser set companyusername=#{obj.companyusername,jdbcType=VARCHAR},
+		companyusermanager=#{obj.companyusermanager,jdbcType=VARCHAR},
+		companyusertel=#{obj.companyusertel,jdbcType=VARCHAR},
+		companyuserlandtel=#{obj.companyuserlandtel,jdbcType=VARCHAR},
+		companyuseremail=#{obj.companyuseremail,jdbcType=VARCHAR}
+		where id = #{id}
+	</update>
+
+    <insert id="companyUserAppl" parameterType="com.springapp.mvc.pojo.CompanyApplication">
+		INSERT into companyapplication (companyusername,applicationreason,companyuseremail,companyusertel,applicationtime) VALUES
+		(#{companyusername,jdbcType=VARCHAR},#{applicationreason,jdbcType=VARCHAR},#{companyuseremail,jdbcType=VARCHAR},#{companyusertel,jdbcType=VARCHAR},#{applicationtime,jdbcType=VARCHAR})
+	</insert>
+
+
+    <select id="getAllCAppl" resultType="com.springapp.mvc.pojo.CompanyApplication">
+		SELECT * from companyapplication
+	</select>
+
+    <select id="getReasonById" resultType="com.springapp.mvc.pojo.CompanyApplication">
+		SELECT * from companyapplication where id=#{id}
+	</select>
+
+    <delete id="delApplById" parameterType="java.lang.Integer">
+		DELETE from companyapplication where id =#{id}
+	</delete>
+
+    <select id="getServiceById" resultType="com.springapp.mvc.pojo.Service">
+		select * from service where id=#{0}
+	</select>
+
+    <update id="changeServiceCheck" parameterType="java.lang.Integer">
+		UPDATE service SET serviceCheck=1 WHERE id=#{0}
+	</update>
+
+    <update id="notAgrServiceCheck" parameterType="java.lang.Integer">
+		UPDATE service SET serviceCheck=0 WHERE id=#{0}
+	</update>
+
+
+    <select id="getNewsById" resultType="com.springapp.mvc.pojo.LastedNews">
+		select * from lastednews where id=#{0}
+	</select>
+
+    <update id="changeNewsCheck">
+		UPDATE lastednews SET newsCheck=1 WHERE id=#{0}
+	</update>
+
+    <update id="notAgrNewsCheck">
+		UPDATE lastednews SET newsCheck=0 WHERE id=#{0}
+	</update>
+
+
+    <insert id="addNews">
+		insert into lastednews (newstype,newsname,newscontent,newspic,companyuserid,newscheck,companyname,companyusertel,newsdescription)
+		VALUES (#{newstype,jdbcType=VARCHAR},#{newsname,jdbcType=VARCHAR},#{newscontent,jdbcType=VARCHAR},
+		#{newspic,jdbcType=VARCHAR},#{companyuserid,jdbcType=INTEGER},#{newscheck,jdbcType=VARCHAR},
+		#{companyname,jdbcType=VARCHAR},#{companyusertel,jdbcType=VARCHAR},#{newsdescription,jdbcType=VARCHAR})
+	</insert>
+    <select id="listService" resultType="com.springapp.mvc.pojo.Service" parameterType="java.lang.String">
+-- 		SELECT * from service where
+	</select>
+
+
+    <select id="getType1Service" resultType="com.springapp.mvc.pojo.Service" parameterType="java.lang.Integer">
+		SELECT * from service where type1id = #{0} and companyuserid = #{1};
+	</select>
+
+    <select id="getType1List" resultType="java.lang.Integer">
+		SELECT distinct type1id from service where companyuserid=#{0};
+	</select>
+
+    <select id="get1IdByTypeName" resultType="java.lang.Integer">
+		select DISTINCT Type1Id from service_type_table where Type1Name = #{0};
+	</select>
+    <select id="get2IdByTypeName" resultType="java.lang.Integer">
+		select DISTINCT Type2Id from service_type_table where Type2Name = #{0};
+	</select>
+    <select id="get3IdByTypeName" resultType="java.lang.Integer">
+		select DISTINCT Type3Id from service_type_table where Type3Name = #{0};
+	</select>
+
+    <select id="getIdByAc" resultType="java.lang.Integer">
+		SELECT id from companyuser where companyUserAccount = #{0}
+	</select>
+
+    <select id="getType1NameById" resultType="java.lang.String">
+		SELECT DISTINCT Type1Name from service_type_table where Type1Id = #{0}
+	</select>
+
+    <update id="delService">
+		update service set servicecheck = -1 where id=#{0}
+	</update>
+
+    <select id="showService" resultType="com.springapp.mvc.pojo.Service">
+		select * from service where id = #{id};
+	</select>
+
+    <update id="editService">
+		update service set servicedescription = #{1} , serviceCheck = null WHERE id = #{0}
+	</update>
+
+    <select id="getType2List" resultType="java.lang.String">
+		SELECT DISTINCT Type2Name from service_type_table where Type1Name = #{Type1Name}
+	</select>
+
+    <select id="getType3List" resultType="java.lang.String">
+		SELECT DISTINCT Type3Name from service_type_table where Type1Name = #{0} and Type2Name = #{1}
+	</select>
+
+    <select id="getAllType1List" resultType="java.lang.String">
+		SELECT DISTINCT Type1Name from service_type_table
+	</select>
+
+    <select id="getSpecType2List" resultType="java.lang.String">
+		SELECT DISTINCT Type2Name from service_type_table where Type1Name = 'LOGO/包装/VI设计';
+	</select>
+
+    <select id="getSpecType3List" resultType="java.lang.String">
+		SELECT DISTINCT Type3Name from service_type_table where Type1Name = 'LOGO/包装/VI设计' and Type2Name = 'LOGO设计';
+	</select>
+
+    <insert id="addService">
+		INSERT into service (type1id,type2id,type3id,servicename,servicepic,companyuserid,servicedescription,servicemanage,servicecheck,servicemanagetel)
+		VALUES (#{type1id,jdbcType=INTEGER},#{type2id,jdbcType=INTEGER},#{type3id,jdbcType=INTEGER},
+		#{servicename,jdbcType=VARCHAR},#{servicepic,jdbcType=VARCHAR},#{companyuserid,jdbcType=INTEGER},
+		#{servicedescription,jdbcType=VARCHAR},#{servicemanage,jdbcType=VARCHAR},
+		#{servicecheck,jdbcType=VARCHAR},#{servicemanagetel,jdbcType=VARCHAR})
+	</insert>
+
+    <delete id="agrDelService">
+		DELETE from service where id = #{0}
+	</delete>
+
+    <select id="getNewsTypeList" resultType="java.lang.String">
+		select DISTINCT newsType from lastednews;
+	</select>
+
+    <select id="getMyNewsList" resultType="com.springapp.mvc.pojo.LastedNews">
+		select * from lastednews where companyuserid = #{0} and newscheck is not null
+	</select>
+
+    <update id="agrNewsContentCheck">
+		update lastednews set newscontent = null where id=#{0}
+	</update>
+
+    <update id="notAgrNewsContentCheck">
+		update lastednews set newscontent = null where id=#{0}
+	</update>
+
+
+
+	<!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+	<select id="getTopService" resultType="java.lang.Integer">
+		select serviceId from user_service GROUP by serviceId ORDER by count(userId) limit 0,10;
+	</select>
+
+	<select id="getTopNews" resultType="java.lang.Integer">
+		select newsId from user_news GROUP by newsId ORDER by count(userId) limit 0,10;
+	</select>
+
+	<insert id="insertServiceType">
+		insert into nocheck_servicetype_table (type1Name,type2Name) VALUES
+		 (#{0,jdbcType=VARCHAR},#{1,jdbcType=VARCHAR})
+	</insert>
+</mapper>

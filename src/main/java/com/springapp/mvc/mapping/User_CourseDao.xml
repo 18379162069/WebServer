@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springapp.mvc.dao.user_course.User_CourseDao">
+	<resultMap id="U_CResultMap" type="com.springapp.mvc.pojo.User_Course">
+		<id column="id" property="id"/>
+		<result column="userid" property="userid"/>
+		<result column="courseid" property="courseid"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,userid,courseid
+	</sql>
+	<insert id="insertU_CNexus" >
+
+         INSERT INTO user_course (userid,courseid)
+          VALUE (#{0},#{1})
+	</insert>
+	<delete id="deleteU_CNexus"   >
+		DELETE FROM  user_course WHERE userid=#{0}AND courseid=#{1}
+	</delete>
+	<select id="getU_CListByuserid"  resultMap="U_CResultMap" >
+		SELECT * FROM  user_course WHERE     userid=#{0}
+	</select>
+	<select id="getU_CListBycourseid"  resultMap="U_CResultMap" >
+		SELECT * FROM  user_course WHERE     courseid=#{0}
+	</select>
+</mapper>

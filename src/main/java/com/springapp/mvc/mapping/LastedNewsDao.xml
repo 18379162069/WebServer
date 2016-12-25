@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springapp.mvc.dao.lastednews.LastedNewsDao">
+	<resultMap id="LastedNewsResultMap" type="com.springapp.mvc.pojo.LastedNews">
+		<id column="id" property="id"/>
+		<result column="type1id" property="type1id"/>
+		<result column="type2id" property="type2id"/>
+		<result column="type3id" property="type3id"/>
+		<result column="newsname" property="newsname"/>
+		<result column="newscontent" property="newscontent"/>
+		<result column="companyid" property="companyid"/>
+		<result column="newscheck" property="newscheck"/>
+		<result column="companyname" property="companyname"/>
+		<result column="companyusertel" property="companyusertel"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,type1id,type2id,type3id,newsname,newscontent,companyid,newscheck,companyname,companyusertel
+	</sql>
+	<insert id="insertlastedNews"  parameterType="com.springapp.mvc.pojo.LastedNews">
+
+         INSERT INTO lastednews (type1id,type2id,type3id,newsname,newscontent,companyid,newscheck,companyname,companyusertel)
+          VALUE (#{type1id},#{type2id},#{type3id},#{newsname},#{newscontent},#{companyid},#{newscheck},#{companyname},#{companyusertel})
+	</insert>
+	<delete id="deletelastedNewsbyid" parameterType="java.lang.Integer"  >
+		DELETE FROM  lastednews WHERE id=#{id}
+	</delete>
+	<select id="getlastedNewsbyNewsname" parameterType="java.lang.String" resultMap="LastedNewsResultMap">
+		SELECT * FROM  lastednews WHERE newsname LIKE  "%"#{newsname}"%"
+	</select>
+	<select id="getlastedNewsbyid" parameterType="java.lang.Integer" resultType="com.springapp.mvc.pojo.Service">
+		SELECT * FROM  lastednews  WHERE id=#{id}
+	</select>
+	<update id="alterServiceInfo"   parameterType="com.springapp.mvc.pojo.Service">
+		UPDATE service SET type1id=#{type1id},type2id=#{type2id},type3id=#{type3id},newsname=#{newsname},newscontent=#{newscontent},
+		companyid=#{companyid},newscheck=#{newscheck},companyname=#{companyname},companyusertel=#{companyusertel}
+		 WHERE id=#{id}
+	</update>
+
+</mapper>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springapp.mvc.dao.course.CourseDao">
+	<resultMap id="CourseResultMap" type="com.springapp.mvc.pojo.Course">
+		<id column="id" property="id"/>
+		<result column="type1id" property="type1id"/>
+		<result column="type2id" property="type2id"/>
+		<result column="type3id" property="type3id"/>
+		<result column="coursename" property="coursename"/>
+		<result column="coursepic" property="coursepic"/>
+		<result column="courseprice" property="courseprice"/>
+		<result column="coursedescription" property="coursedescription"/>
+		<result column="coursecontent" property="coursecontent"/>
+		<result column="coursemode" property="coursemode"/>
+		<result column="courselecturer" property="courselecturer"/>
+		<result column="lectureremail" property="lectureremail"/>
+		<result column="coursetime" property="coursetime"/>
+		<result column="signup" property="signup"/>
+		<result column="courseperiod" property="courseperiod"/>
+		<result column="coursetakes" property="coursetakes"/>
+		<result column="courseincomecount" property="courseincomecount"/>
+		<result column="coursecheck" property="coursecheck"/>
+		<result column="coursemaxstu" property="coursemaxstu"/>
+		<result column="coursedoc" property="coursedoc"/>
+		<result column="coursedocstate" property="coursedocstate"/>
+
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,type1id,type2id,type3id,coursename,coursepic,courseprice,coursedescription,coursecontent,coursemode,courselecturer,lectureremail,
+		coursetime,signup,courseperiod,coursetakes,courseincomecount,coursecheck,coursemaxstu,coursedoc,coursedocstate
+
+	</sql>
+	<insert id="insertCourse"  parameterType="com.springapp.mvc.pojo.Course">
+         INSERT INTO course (type1id,type2id,type3id,coursename,coursepic,courseprice,coursedescription,coursecontent,coursemode,courselecturer,lectureremail,
+		coursetime,signup,courseperiod,coursetakes,courseincomecount,coursecheck,coursemaxstu,coursedoc,coursedocstate)
+          VALUE (#{type1id},#{type2id},#{type3id},#{coursename},#{coursepic},#{courseprice},#{coursedescription},#{coursecontent},#{coursemode},
+          #{courselecturer},#{lectureremail},#{coursetime},#{signup},#{courseperiod},#{coursetakes},#{courseincomecount},#{coursecheck},#{coursemaxstu},#{coursedoc},#{coursedocstate})
+	</insert>
+	<delete id="deleteCoursebyid" parameterType="java.lang.Integer"  >
+		DELETE FROM  course WHERE id=#{id}
+	</delete>
+	<select id="getCoursebyid"  resultType="com.springapp.mvc.pojo.Course" >
+		SELECT * FROM  course WHERE     id=#{0}
+	</select>
+	<select id="getCoursebyname" parameterType="java.lang.String" resultMap="CourseResultMap" >
+		SELECT * FROM  course WHERE    coursename LIKE  "%"#{coursename}"%"
+	</select>
+	<select id="getAllPassCourse"  resultMap="CourseResultMap" >
+		SELECT * FROM  course
+	</select>
+	<select id="goodCourses"  resultMap="CourseResultMap" >
+		SELECT * FROM  course WHERE coursetakes>500
+	</select>
+	<select id="getAllCourseNum"  resultType="java.lang.Integer" >
+		SELECT COUNT(*) FROM  course
+	</select>
+	<select id="getPassCourse"  resultType="java.lang.Integer" >
+		SELECT COUNT(*) FROM  course WHERE coursecheck='1'
+	</select>
+	<select id="courseCheck"  resultType="java.lang.String" >
+		SELECT coursecheck FROM  course WHERE id=#{0}
+	</select>
+	<select id="getCoursePicsbyid"  resultType="java.lang.Integer" >
+		SELECT coursepic  FROM  course WHERE id=#{id}
+	</select>
+	<update id="updateCourseinfo"   parameterType="com.springapp.mvc.pojo.Course">
+		UPDATE course SET type1id=#{type1id},type2id=#{type2id},type3id=#{type3id},coursename=#{coursename},coursepic=#{coursepic},courseprice=#{courseprice},coursedescription=#{coursedescription},
+		coursecontent=#{coursecontent},coursemode=#{coursemode},courselecturer=#{courselecturer},lectureremail=#{lectureremail},coursetime=#{coursetime},signup=#{signup},courseperiod=#{courseperiod},
+		coursetakes=#{coursetakes},courseincomecount=#{courseincomecount},coursecheck=#{coursecheck},coursemaxstu=#{coursemaxstu},coursedoc=#{coursedoc},coursedocstate=#{coursedocstate}
+		 WHERE id=#{id}
+	</update>
+	<update id="updateCoursePic" >
+		UPDATE course SET coursepic=#{1}
+		WHERE id=#{0}
+	</update>
+	<update id="changeCourseCheck" >
+		UPDATE course SET coursecheck=#{1}
+		WHERE id=#{0}
+	</update>
+
+	<select id="getAllStuByCourseId" resultType="java.lang.Integer">
+		select * from user_course where courseId = #{0}
+	</select>
+
+
+	<!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+	<select id="getTopCourse" resultType="java.lang.Integer">
+		SELECT courseId from user_course GROUP by courseId ORDER by count(userId) limit 0,10;
+	</select>
+
+	<select id="getAllType1List" resultType="java.lang.String">
+		SELECT Type1Name from typetable GROUP by Type1Id
+	</select>
+
+	<select id="getTyp2IdByType2Name" resultType="java.lang.Integer">
+		SELECT DISTINCT Type2Id FROM typetable where Type2Name = #{0}
+	</select>
+
+	<select id="getTyp1IdByType2Name" resultType="java.lang.Integer">
+		SELECT DISTINCT Type1Id FROM typetable where Type2Name = #{0}
+	</select>
+
+	<select id="getCByType12Id" resultType="com.springapp.mvc.pojo.Course">
+		select * from course where type1id = #{0} and type2id = #{1} and coursecheck = 1 limit 0,12;
+	</select>
+
+	<select id="getCByType12IdPage" resultType="com.springapp.mvc.pojo.Course">
+		select * from course where type1id = #{0} and type2id = #{1} and coursecheck = 1 limit #{2},12;
+	</select>
+
+	<select id="getCourseAllPageNum" resultType="java.lang.Integer">
+		select count(*) from course where type1id = #{0} and type2id = #{1} and coursecheck = 1;
+	</select>
+
+
+
+
+
+
+
+
+	<select id="getCourseType2List" resultType="java.lang.String">
+		select DISTINCT (Type2Name) from typetable where Type1Id = 1;
+	</select>
+
+	<select id="getCourseType2ListForType1" resultType="java.lang.String">
+		select DISTINCT (Type2Name) from typetable where Type1Name = #{0};
+	</select>
+
+	<select id="getType1IdByType1Name" resultType="java.lang.Integer">
+		SELECT DISTINCT Type1Id FROM typetable where Type1Name = #{0}
+	</select>
+
+	<select id="getLastType2IdByType1Name" resultType="java.lang.Integer">
+		select Type2Id from typetable where Type1Name=#{0} ORDER by id desc limit 0,1;
+	</select>
+
+	<select id="getCheckTypeById" resultType="com.springapp.mvc.pojo.TypeCheck">
+		select * from nocheck_coursetype_table where id=#{0}
+	</select>
+
+	<insert id="addCourseType">
+		insert into typetable (Type1Id,Type1Name,Type2Id,Type2Name)
+		VALUES (#{0},#{1},#{2},#{3})
+	</insert>
+
+	<select id="getAllLecturerByEmail"  resultMap="CourseResultMap" >
+		SELECT * FROM  course WHERE lecturerEmail=#{0}
+	</select>
+</mapper>

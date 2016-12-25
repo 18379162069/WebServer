@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springapp.mvc.dao.service.ServiceDao">
+    <resultMap id="ServiceResultMap" type="com.springapp.mvc.pojo.Service">
+        <id column="id" property="id"/>
+        <result column="type1id" property="type1id"/>
+        <result column="type2id" property="type2id"/>
+        <result column="type3id" property="type3id"/>
+        <result column="servicename" property="servicename"/>
+        <result column="companyuserid" property="companyuserid"/>
+        <result column="servicedescription" property="servicedescription"/>
+        <result column="servicemanage" property="servicemanage"/>
+        <result column="servicecheck" property="servicecheck"/>
+        <result column="servicemanagetel" property="servicemanagetel"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+		id,type1id,type2id,type3id,servicename,companyuserid,servicedescription,servicemanage,servicecheck,servicemanagetel
+	</sql>
+    <insert id="insertService" parameterType="com.springapp.mvc.pojo.Service">
+
+         INSERT INTO service (type1id,type2id,type3id,servicename,companyuserid,servicedescription,servicemanage,servicecheck,servicemanagetel)
+          VALUE (#{type1id},#{type2id},#{type3id},#{servicename},#{companyuserid},#{servicedescription},#{servicemanage},#{servicecheck},#{servicemanagetel})
+	</insert>
+    <delete id="deleteServicebyid" parameterType="java.lang.Integer">
+		DELETE FROM  service WHERE id=#{id}
+	</delete>
+    <select id="searchServicebyname" parameterType="java.lang.String" resultMap="ServiceResultMap">
+		SELECT * FROM  service WHERE servicename LIKE  "%"#{servicename}"%"
+	</select>
+    <select id="searchServicebyid" parameterType="java.lang.Integer" resultType="com.springapp.mvc.pojo.Service">
+		SELECT * FROM  service  WHERE id=#{id}
+	</select>
+    <update id="alterServiceInfo" parameterType="com.springapp.mvc.pojo.Service">
+		UPDATE service SET type1id=#{type1id},type2id=#{type2id},type3id=#{type3id},servicename=#{servicename},companyuserid=#{companyuserid},
+		servicedescription=#{servicedescription},servicemanage=#{servicemanage},servicecheck=#{servicecheck},servicemanagetel=#{servicemanagetel}
+		 WHERE id=#{id}
+	</update>
+    <select id="searchServicebytype1" parameterType="java.lang.Integer" resultMap="ServiceResultMap">
+		SELECT * FROM service WHERE type1id>0
+	</select>
+    <select id="searchServicebytype2" parameterType="java.lang.Integer" resultMap="ServiceResultMap">
+		SELECT * FROM service WHERE type2id>0
+	</select>
+    <select id="searchServicebytype3" parameterType="java.lang.Integer" resultMap="ServiceResultMap">
+		SELECT * FROM service WHERE type3id>0
+	</select>
+    <update id="alterServicecheck">
+		UPDATE  service SET servicecheck=#{1} WHERE id=#{0}
+	</update>
+    <select id="getServicenum" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM service
+	</select>
+    <select id="getpassServicenum" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM service WHERE servicecheck="pass"
+	</select>
+
+
+    <!--/////////////////////////////////////////////////////-->
+    <select id="getAllType1List" resultType="java.lang.String">
+		SELECT Type1Name from service_type_table GROUP by Type1Id
+	</select>
+
+    <select id="getTopService" resultType="java.lang.Integer">
+		SELECT serviceId from user_service GROUP by serviceId ORDER by count(userId) limit 0,10;
+	</select>
+
+    <select id="getServicebyid" resultType="com.springapp.mvc.pojo.Service">
+		select * from service where id = #{0}
+	</select>
+
+    <select id="getType2For1" resultType="java.lang.String">
+		SELECT DISTINCT Type2Name from service_type_table where Type1Id = #{0}
+	</select>
+
+	<select id="getTyp2IdByType2Name" resultType="java.lang.Integer">
+		SELECT DISTINCT Type2Id FROM service_type_table where Type2Name = #{0}
+	</select>
+
+	<select id="getTyp1IdByType2Name" resultType="java.lang.Integer">
+		SELECT DISTINCT Type1Id FROM service_type_table where Type2Name = #{0}
+	</select>
+
+	<select id="getSByType12IdPage" resultType="com.springapp.mvc.pojo.Service">
+		select * from service where type1id = #{0} and type2id = #{1} and servicecheck = 1 limit #{2},12;
+	</select>
+
+	<select id="getServiceAllPageNum" resultType="java.lang.Integer">
+		select count(*) from service where type1id = #{0} and type2id = #{1} and servicecheck = 1;
+	</select>
+
+	<select id="getType1IdByType1Name" resultType="java.lang.Integer">
+		select DISTINCT Type1Id from service_type_table where Type1Name = #{0}
+	</select>
+
+
+
+	<select id="getCheckTypeById" resultType="com.springapp.mvc.pojo.TypeCheck">
+		select * from nocheck_servicetype_table where id=#{0}
+	</select>
+
+	<insert id="addServiceType">
+		insert into service_type_table (Type1Id,Type1Name,Type2Id,Type2Name)
+		 VALUES (#{0},#{1},#{2},#{3})
+	</insert>
+
+	<select id="getLastType2IdByType1Name" resultType="java.lang.Integer">
+		select Type2Id from service_type_table where Type1Name=#{0} ORDER by id desc limit 0,1;
+	</select>
+</mapper>

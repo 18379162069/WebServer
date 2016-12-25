@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springapp.mvc.dao.web.WebDao">
+
+	<select id="getLunboPicList" resultType="java.lang.String">
+		SELECT luboPics from webpage
+	</select>
+	<select id="getCompanyIntroduce" resultType="java.lang.String">
+		select companyDescription from webpage
+	</select>
+
+	<select id="getCompanyLogo" resultType="java.lang.String">
+		SELECT companyLogo from webpage
+	</select>
+
+	<select id="getCompanyCoops" resultType="java.lang.String">
+		select cooperation from webpage
+	</select>
+
+	<select id="getType2For1" resultType="java.lang.String">
+		SELECT DISTINCT Type2Name from typetable where Type1Id = #{0}
+	</select>
+
+	<update id="updateCompanyInfo" parameterType="com.springapp.mvc.pojo.WebPage">
+		UPDATE webpage SET companyName=#{companyName},companyLogo=#{companyLogo},companyDescription=#{companyDescription},
+		luboPics=#{luboPics},cooperation=#{cooperation},email=#{email},emailPsd=#{emailPsd},alipayAc=#{alipayAc}
+	</update>
+	<select id="getWebPageInfo" resultType="com.springapp.mvc.pojo.WebPage">
+		SELECT * FROM webpage
+	</select>
+</mapper>

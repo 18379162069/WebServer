@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springapp.mvc.dao.admin.AdminDao">
+    <resultMap id="AdminResultMap" type="com.springapp.mvc.pojo.Admin">
+        <id column="id" property="id"/>
+        <result column="adminaccount" property="adminaccount"/>
+        <result column="adminpassword" property="adminpassword"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id, adminaccount, adminpassword
+	</sql>
+    <insert id="insertAdmin" parameterType="com.springapp.mvc.pojo.Admin">
+         INSERT INTO admin (adminaccount,adminpassword) VALUE (#{adminaccount},#{adminpassword})
+	</insert>
+    <delete id="deleteAdmin" parameterType="java.lang.String">
+		DELETE FROM  admin WHERE adminaccount=#{adminaccount}
+	</delete>
+    <select id="checkAdmin" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM  admin WHERE adminaccount=#{adminaccount}
+	</select>
+    <select id="getallAdminNum" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM  admin
+	</select>
+    <select id="searchAdmin" parameterType="java.lang.String" resultType="com.springapp.mvc.pojo.Admin">
+		SELECT * FROM  admin WHERE adminaccount=#{adminaccount}
+	</select>
+    <update id="alterAdmin" parameterType="com.springapp.mvc.pojo.Admin">
+		UPDATE admin SET adminpassword=#{adminpassword} WHERE adminaccount=#{adminaccount}
+	</update>
+    <select id="matchingAdmin" parameterType="com.springapp.mvc.pojo.Admin" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM admin WHERE adminaccount=#{adminaccount} and adminpassword=#{adminpassword}
+	</select>
+
+
+    <select id="getCourseDocCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) from course as id where courseCheck = 1 and courseDoc is not null and courseDocState is null
+	</select>
+    <select id="getCourseCheckCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) from course as id where courseCheck is null
+	</select>
+    <select id="getServiceCheckCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) from service as id where serviceCheck is null
+    </select>
+    <select id="getCompanyCheckCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) from companyuser as id where companyUserCheck is null
+    </select>
+    <select id="getLecturerCheckCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) from lecturer as id where lecturerCheck is null
+    </select>
+    <select id="getNewsCheckCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) from lastednews as id where newsCheck is null
+    </select>
+
+
+    <select id="getNoCheckCourse" resultType="com.springapp.mvc.pojo.Course">
+        SELECT * from course where courseCheck is null order by id desc limit #{pageNo},10;
+    </select>
+
+    <select id="getNoCheckService" resultType="com.springapp.mvc.pojo.Service">
+        SELECT * from service where servicecheck is null or servicecheck = '-1' order by id desc limit #{pageNo},10;
+    </select>
+
+    <select id="getNoCheckNews" resultType="com.springapp.mvc.pojo.LastedNews">
+        SELECT * from lastednews where newsCheck is null order by id desc limit #{pageNo},10;
+    </select>
+
+    <select id="getNoCheckNewsContent" resultType="com.springapp.mvc.pojo.LastedNews">
+        SELECT * from lastednews where newsContentCheck is null and newsCheck = 1 and newsContent is not null order by id desc limit #{pageNo},10;
+    </select>
+
+    <select id="getNoCheckCourseDoc" resultType="com.springapp.mvc.pojo.Course">
+        SELECT * from course where courseCheck =1 and courseDoc is not null and courseDocState is null order by id desc limit #{pageNo},10;
+    </select>
+
+    <select id="getNoCheckC" resultType="com.springapp.mvc.pojo.CompanyUser">
+        SELECT * from companyuser where companyUserCheck is null order by id desc limit #{pageNo},10;
+    </select>
+
+    <select id="getNoCheckL" resultType="com.springapp.mvc.pojo.Lecturer">
+        SELECT * from lecturer where lecturerCheck is null order by id desc limit #{pageNo},10;
+    </select>
+
+    <select id="getAllNewsList" resultType="com.springapp.mvc.pojo.LastedNews">
+        SELECT * from lastednews where companyUserId = 0 order by newsType desc;
+    </select>
+
+
+    <insert id="addNews" parameterType="com.springapp.mvc.pojo.LastedNews">
+        insert into lastednews (newsname,newstype,newscontent,companyuserid,newscheck,companyname,companyusertel,newsdescription,newspic,newscontentcheck)
+         VALUES (
+         #{newsname,jdbcType=VARCHAR},
+         #{newstype,jdbcType=VARCHAR},
+         #{newscontent,jdbcType=VARCHAR},
+         #{companyuserid,jdbcType=VARCHAR},
+         #{newscheck,jdbcType=VARCHAR},
+         #{companyname,jdbcType=VARCHAR},
+         #{companyusertel,jdbcType=VARCHAR},
+         #{newsdescription,jdbcType=VARCHAR},
+         #{newspic,jdbcType=VARCHAR},
+         #{newscontentcheck,jdbcType=VARCHAR})
+    </insert>
+
+
+    <select id="getAllUserByNewsId" resultType="java.lang.Integer">
+        select userId from user_news where newsId = #{id}
+    </select>
+
+    <select id="getNewsNameById" resultType="java.lang.String">
+        SELECT newsName from lastednews where id=#{id}
+    </select>
+
+    <select id="getCourseById" resultType="com.springapp.mvc.pojo.Course">
+        SELECT * from course where id=#{id}
+    </select>
+
+    <delete id="agrDelCourse">
+        DELETE from course where id=#{0}
+    </delete>
+
+
+
+
+
+    <!-- /////////////////////////////////////////////////////////////////-->
+    <select id="getUserByTel" resultType="com.springapp.mvc.pojo.User">
+        SELECT * from user where usertel = #{0}
+    </select>
+
+    <select id="getAllStuByCourseId" resultType="java.lang.Integer">
+        select userId from user_course where courseId = #{0}
+    </select>
+
+    <select id="getCourseTypeCheckList" resultType="com.springapp.mvc.pojo.TypeCheck">
+        select * from nocheck_coursetype_table;
+    </select>
+
+    <select id="getServiceTypeCheckList" resultType="com.springapp.mvc.pojo.TypeCheck">
+        SELECT * from nocheck_servicetype_table;
+    </select>
+
+    <delete id="delCourseType" parameterType="java.lang.Integer">
+        DELETE from nocheck_coursetype_table where id =#{0}
+    </delete>
+
+
+    <delete id="delServiceType" parameterType="java.lang.Integer">
+        DELETE from nocheck_servicetype_table where id =#{0}
+    </delete>
+
+    <select id="getAllAdmin" resultMap="AdminResultMap">
+        SELECT * from admin
+    </select>
+
+</mapper>

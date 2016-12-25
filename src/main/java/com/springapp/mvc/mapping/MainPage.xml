@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springapp.mvc.dao.mainpage.MainpageDao">
+	<sql id="Base_Column_List">
+		id,companydescription,companyname,courseids,coursepics,serviceids,servicepics,homepageimgs,cooperation,cooperationpics
+	</sql>
+
+	<insert id="insertMainpageInfo" parameterType="com.springapp.mvc.pojo.MainPage">
+		INSERT INTO mainpage(companydescription,companyname,homepageimgs)
+		 VALUE (#{companydescription},#{companyname},#{homepageimgs})
+	</insert>
+	<update id="updateMainPageInfo" parameterType="com.springapp.mvc.pojo.MainPage">
+		UPDATE mainpage SET companydescription=#{companydescription},companyname=#{companynamen},homepageimgs=#{homepageimgs}
+		WHERE id=1
+	</update>
+	<update id="updateCourseid" parameterType="java.lang.String">
+		UPDATE mainpage SET courseids=#{courseids}
+		WHERE id=1
+	</update>
+	<update id="updateServiceid" parameterType="java.lang.String">
+		UPDATE mainpage SET serviceids=#{serviceids}
+		WHERE id=1
+	</update>
+	<update id="updateCoursepic" parameterType="java.lang.String">
+		UPDATE mainpage SET coursepics=#{coursepics}
+		WHERE id=1
+	</update>
+	<update id="updateServicepic" parameterType="java.lang.String">
+		UPDATE mainpage SET servicepics=#{servicepics}
+		WHERE id=1
+	</update>
+	<update id="updateHomepageimg" parameterType="java.lang.String">
+		UPDATE mainpage SET homepageimgs=#{homepageimgs}
+		WHERE id=1
+	</update>
+	<update id="updateCooperationpic" parameterType="java.lang.String">
+		UPDATE mainpage SET cooperationpics=#{cooperationpics}
+		WHERE id=1
+	</update>
+	<update id="updateCooperation" parameterType="java.lang.String">
+		UPDATE mainpage SET cooperation=#{cooperation}
+		WHERE id=1
+	</update>
+	<select id="getCourseids">
+		SELECT courseids  FROM mainpage WHERE id=1
+	</select>
+	<select id="getServiceids">
+		SELECT serviceids FROM mainpage WHERE id=1
+	</select>
+	<select id="getCoursePics" >
+		SELECT coursepics FROM mainpage WHERE id=1
+	</select>
+	<select id="getServicePics" >
+		SELECT servicepics FROM mainpage WHERE id=1
+	</select>
+	<select id="getHompageImgs" >
+		SELECT homepageimg FROM mainpage WHERE id=1
+	</select>
+	<select id="getCooperation" >
+		SELECT cooperation FROM mainpage WHERE id=1
+	</select>
+	<select id="getCooperationpics">
+		SELECT cooperationpics FROM mainpage WHERE id=1
+	</select>
+
+
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springapp.mvc.dao.user_service.User_ServiceDao">
+	<resultMap id="U_SResultMap" type="com.springapp.mvc.pojo.User_Service">
+		<id column="id" property="id"/>
+		<result column="userid" property="userid"/>
+		<result column="serviceid" property="serviceid"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,userid,serviceid
+	</sql>
+	<insert id="inserteU_SNexus" >
+
+         INSERT INTO user_service (userid,serviceid)
+          VALUE (#{0},#{1})
+	</insert>
+	<delete id="deleteU_SNexus"   >
+		DELETE FROM  user_service WHERE userid=#{0}AND serviceid=#{1}
+	</delete>
+	<select id="getListByUserId"  resultMap="U_SResultMap" >
+		SELECT * FROM  user_service WHERE     userid=#{0}
+	</select>
+	<select id="getListByCourseid"  resultMap="U_SResultMap" >
+		SELECT * FROM  user_service WHERE     serviceid=#{0}
+	</select>
+</mapper>

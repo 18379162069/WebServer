@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springapp.mvc.dao.compsny_service.Company_ServiceDao">
+	<resultMap id="C_SResultMap" type="com.springapp.mvc.pojo.Company_Service">
+		<id column="id" property="id"/>
+		<result column="companyuserid" property="companyuserid"/>
+		<result column="serviceid" property="serviceid"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,companyuserid,serviceid
+	</sql>
+	<insert id="addC_SNexus"  >
+
+         INSERT INTO company_service (companyuserid,serviceid)
+          VALUE (#{0},#{1})
+	</insert>
+	<delete id="deleteC_SNexus" parameterType="java.lang.Integer"  >
+		DELETE FROM  company_service WHERE id=#{id}
+	</delete>
+	<select id="getC_SNexusbyCompanyid" parameterType="java.lang.Integer" resultMap="C_SResultMap" >
+		SELECT * FROM  company_service WHERE     companyUserId=#{companyuserid}
+	</select>
+</mapper>

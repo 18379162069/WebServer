@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springapp.mvc.dao.user.UserDao">
+	<resultMap id="UserResultMap" type="com.springapp.mvc.pojo.User">
+		<id column="id" property="id"/>
+		<result column="userrank" property="userrank"/>
+		<result column="userimage" property="userimage"/>
+		<result column="username" property="username"/>
+		<result column="userpassword" property="userpassword"/>
+		<result column="useremail"   property="useremail"/>
+		<result column="userlastlogin" property="userlastlogin"/>
+		<result column="usertel" property="usertel"/>
+		<result column="userlandtel" property="userlantel"/>
+		<result column="userjob"     property="userjob"/>
+		<result column="usercompany" property="usercompany"/>
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,userrank,userimage,username, userpassword,useremail,userlastlogin,usertel,userlandtel,userjob,usercompany
+	</sql>
+
+	<insert id="insertUser" parameterType="com.springapp.mvc.pojo.User">
+		INSERT INTO user(userrank,userimage,username, userpassword,useremail,userlastlogin,usertel,userlandtel,userjob,usercompany)
+		VALUE (#{userrank},#{userimage},#{username},
+		#{userpassword},#{useremail},#{userlastlogin},
+		#{usertel},#{userlandtel},#{userjob},#{usercompany})
+	</insert>
+	<delete id="deleteUserbyemial" parameterType="java.lang.String">
+		DELETE FROM user WHERE useremail=#{useremail}
+	</delete>
+	<delete id="deleteUserbytel" parameterType="java.lang.String">
+		DELETE  FROM  user WHERE  usertel=#{usertel}
+	</delete>
+	<select id="searchUserbyemail" resultType="com.springapp.mvc.pojo.User" parameterType="java.lang.String">
+		SELECT * FROM user WHERE useremail=#{useremail}
+	</select>
+	<select id="searchUserbytel" resultType="com.springapp.mvc.pojo.User" parameterType="java.lang.String">
+		SELECT * FROM user WHERE usertel=#{usertel}
+	</select>
+	<update id="updateUser" parameterType="com.springapp.mvc.pojo.User">
+		UPDATE user SET userrank=#{userrank},userimage=#{userimage},username=#{username},
+		userpassword=#{userpassword},useremail=#{useremail},userlastlogin=#{userlastlogin},
+		usertel=#{usertel},userlandtel=#{userlandtel},userjob=#{userjob},usercompany=#{usercompany}
+		WHERE useremail=#{useremail}
+	</update>
+	<select id="getUsernum" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM user
+	</select>
+	<select id="userMatchingbyemail" resultType="java.lang.Integer" parameterType="com.springapp.mvc.pojo.User">
+		SELECT COUNT(*) FROM user WHERE useremail=#{useremail} AND  userpassword=#{userpassword}
+	</select>
+	<select id="userMatchingbytel" resultType="java.lang.Integer" parameterType="com.springapp.mvc.pojo.User">
+		SELECT COUNT(*) FROM user WHERE usertel=#{usertel} AND  userpassword=#{userpassword}
+	</select>
+	<select id="getAllUser" resultMap="UserResultMap">
+		SELECT * FROM user
+	</select>
+	<select id="usernamecheck" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM user WHERE username=#{0}
+	</select>
+	<select id="updateuseremailcheck" resultType="java.lang.Integer" >
+		SELECT COUNT(*) FROM user WHERE useremail=#{1} AND  id!=#{0}
+	</select>
+
+	<select id="getUserById" resultType="com.springapp.mvc.pojo.User">
+		SELECT * from user WHERE id =#{id}
+	</select>
+
+
+	<select id="getUserByEmail" resultType="com.springapp.mvc.pojo.User">
+		SELECT * from user where useremail =  #{0}
+	</select>
+
+	<select id="getUserByTel" resultType="com.springapp.mvc.pojo.User">
+		SELECT * from user where usertel =  #{0}
+	</select>
+
+
+	<insert id="addService">
+		insert into user_addservice where name=#{0},email=#{1},phone=#{2},subject=#{3},content=#{4}
+	</insert>
+</mapper>

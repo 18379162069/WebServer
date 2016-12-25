@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springapp.mvc.dao.lecturer.LecturerDao">
+    <resultMap id="LecturerResultMap" type="com.springapp.mvc.pojo.Lecturer">
+        <id column="id" property="id"/>
+        <result column="courseid" property="courseid"/>
+        <result column="lecturername" property="lecturername"/>
+        <result column="lecturerrank" property="lecturerrank"/>
+        <result column="lecturercompany" property="lecturercompany"/>
+        <result column="lectureremail" property="lectureremail"/>
+        <result column="lecturerdescription" property="lecturerdescription"/>
+        <result column="lecturersex" property="lecturersex"/>
+        <result column="lecturerage" property="lecturerage"/>
+        <result column="lecturerlastlogin" property="lecturerlastlogin"/>
+        <result column="lecturertel" property="lecturertel"/>
+        <result column="lecturercheck" property="lecturercheck"/>
+        <result column="lectureraccount" property="lectureraccount"/>
+        <result column="lecturerpassword" property="lecturerpassword"/>
+        <result column="lecturerapplreason" property="lecturerapplreason"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+       id,courseid,lecturername,lecturerrank,lecturercompany,lectureremail,lecturerdescription,lecturersex,
+		lecturerage,lecturerlastlogin,lecturertel,lecturercheck,lectureraccount,lecturerpassword,lecturerapplreason
+    </sql>
+    <insert id="insertLecturer" parameterType="com.springapp.mvc.pojo.Lecturer">
+        INSERT INTO lecturer (id,courseid,lecturername,lecturerrank,lecturercompany,lectureremail,lecturerdescription,lecturersex,
+        lecturerage,lecturerlastlogin,lecturertel,lecturercheck,lectureraccount,lecturerpassword,lecturerapplreason) VALUE (#{id},#{courseid},#{lecturername},#{lecturerrank},#{lecturercompany},#{lectureremail},#{lecturerdescription},#{lecturersex},
+        #{lecturerage},#{lecturerlastlogin},#{lecturertel},#{lecturercheck},#{lectureraccount},#{lecturerpassword},#{lecturerapplreason})
+    </insert>
+    <delete id="deleteLecturerById" parameterType="java.lang.Integer">
+        DELETE FROM  lecturer WHERE id=#{id}
+    </delete>
+    <select id="searchLecturerByid" parameterType="java.lang.Integer" resultType="com.springapp.mvc.pojo.Lecturer">
+        SELECT * FROM  lecturer WHERE id=#{id}
+    </select>
+    <select id="searchLecturerByName" resultType="java.lang.String" resultMap="LecturerResultMap">
+        SELECT * FROM  lecturer WHERE lecturername LIKE  "%"#{lecturename}"%"
+    </select>
+    <select id="searchLecturerByAccount" parameterType="java.lang.String" resultType="com.springapp.mvc.pojo.Lecturer">
+        SELECT * FROM  lecturer WHERE lectureraccount=#{account}
+    </select>
+    <select id="searchLecturerByTel" parameterType="java.lang.Integer" resultType="com.springapp.mvc.pojo.Lecturer">
+        SELECT * FROM  lecturer WHERE lecturertel=#{lecturertel}
+    </select>
+    <select id="matchingLecturerbyaccount" resultType="java.lang.Integer" >
+        SELECT COUNT(*) FROM  lecturer WHERE lectureraccount=#{0} AND lecturerpassword=#{1} and lecturercheck is not null
+    </select>
+    <select id="matchingLecturerAccount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM  lecturer WHERE lectureraccount=#{0}
+    </select>
+    <select id="lecturertelcheck" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM  lecturer WHERE lecturertel=#{0}
+    </select>
+    <select id="lectureremailcheck" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM  lecturer WHERE lectureremail=#{0}
+    </select>
+    <update id="updatelecturer" parameterType="com.springapp.mvc.pojo.Lecturer">
+        UPDATE lecturer SET courseid=#{courseid},lecturername=#{lecturername},lecturerrank=#{lecturerrank},lecturercompany=#{lecturercompany},lectureremail=#{lectureremail},
+        lecturerdescription=#{lecturerdescription},lecturersex=#{lecturersex},lecturerage=#{lecturerage},lecturerlastlogin=#{lecturerlastlogin},lecturertel=#{lecturertel},lecturercheck=#{lecturercheck} WHERE id=#{id}
+    </update>
+    <update id="updatelecturerbyid" parameterType="com.springapp.mvc.pojo.Lecturer">
+        UPDATE lecturer SET courseid=#{courseid},lecturername=#{lecturername},lecturerrank=#{lecturerrank},lecturercompany=#{lecturercompany},lectureremail=#{lectureremail},
+        lecturerdescription=#{lecturerdescription},lecturersex=#{lecturersex},lecturerage=#{lecturerage},lecturerlastlogin=#{lecturerlastlogin},lecturertel=#{lecturertel},lecturercheck=#{lecturercheck},lectureraccount=#{lectureraccount},lecturerpassword=#{lecturerpassword},lecturerapplreason=#{lecturerapplreason} WHERE id=#{id}
+    </update>
+    <select id="updatelectureremailcheck" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM  lecturer WHERE lectureremail=#{1}  AND id!=#{0}
+    </select>
+    <update id="updatelecturerbyaccount" parameterType="com.springapp.mvc.pojo.Lecturer">
+        UPDATE lecturer SET courseid=#{courseid},lecturername=#{lecturername},lecturerrank=#{lecturerrank},lecturercompany=#{lecturercompany},lectureremail=#{lectureremail},
+        lecturerdescription=#{lecturerdescription},lecturersex=#{lecturersex},lecturerage=#{lecturerage},lecturerlastlogin=#{lecturerlastlogin},lecturertel=#{lecturertel},lecturercheck=#{lecturercheck},lecturerpassword=#{lecturerpassword},lecturerapplreason=#{lecturerapplreason} WHERE lectureraccount=#{lectureraccount}
+    </update>
+
+    <update id="changeLecturerCheck" >
+        UPDATE lecturer SET lecturercheck='1' WHERE  id=#{0}
+    </update>
+    <update id="changeCourseCheck" >
+        UPDATE course SET coursecheck='1' WHERE  id=#{0}
+    </update>
+    <update id="notAgrCourseCheck">
+        UPDATE course SET coursecheck='-1' WHERE  id=#{0}
+    </update>
+    <select id="getLecturerByCourseEmail" resultType="java.lang.String">
+        select DISTINCT lecturerdescription from lecturer where lectureremail = #{0}
+    </select>
+
+    <select id="get2IdByTypeName" resultType="java.lang.Integer">
+        select DISTINCT Type2Id from typetable where Type2Name = #{0};
+    </select>
+
+
+    <insert id="insertCourseType">
+        insert into nocheck_coursetype_table (type1Name,type2Name) VALUES
+        (#{0,jdbcType=VARCHAR},#{1,jdbcType=VARCHAR})
+    </insert>
+
+</mapper>
